@@ -1,0 +1,35 @@
+{
+    "ATSC3": {
+        "href": "https://https://www.atsc.org/wp-content/uploads/2017/10/A300-2017-ATSC-3-System-Standard-1.pdf",
+        "title": "ATSC Standard: A/300:2017 “ATSC3.0 System”",
+        "publisher": "ATSC"
+    },
+    "DASH-CMAF": {
+        "aliasOf": "iso23009-1-cdamd1"
+    },
+    "HLS": {
+        "aliasOf": "rfc8216"
+    },
+    "DASH": {
+        "aliasOf": "MPEGDASH"
+    },
+    "CMAF": {
+        "aliasOf": "MPEGCMAF"
+    },
+    "CENC": {
+        "aliasOf": "MPEGCENC"
+    },
+    "jws": {
+        "aliasOf": "rfc7515"
+    },
+    "MSPR-EncryptionModes": {
+        "title": "PlayReady Content Encryption Modes",
+        "publisher": "Microsoft",
+        "href": "https://docs.microsoft.com/en-us/playready/packaging/content-encryption-modes"
+    },
+    "HLS-LowLatency": {
+        "title": "Protocol Extension for Low-Latency HLS (Preliminary Specification)",
+        "publisher": "Apple",
+        "href": "https://developer.apple.com/documentation/http_live_streaming/protocol_extension_for_low-latency_hls_preliminary_specification"
+    }
+}
