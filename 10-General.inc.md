@@ -40,21 +40,21 @@ The guidelines in this document define recommended workflows and default behavio
 
 A DASH presentation MAY provide some or all adaptation sets in encrypted form, requiring the use of a <dfn>DRM system</dfn> to decrypt the content for playback. The duty of a [=DRM system=] is to decrypt content while preventing disclosure of the [=content key=] and misuse of the decrypted content (e.g. recording via screen capture software).
 
-In a DASH presentation, every [=representation=] in an adaptation set SHALL be protected using the same [=content key=] (identified by the same `default_KID`).
+In a DASH presentation, every representation in an adaptation set SHALL be protected using the same [=content key=] (identified by the same `default_KID`).
 
-Note: This means that if [=representations=] use different [=content keys=], they must be in different adaptation sets, even if they would otherwise (were they not encrypted) belong to the same adaptation set.
+Note: This means that if representations use different [=content keys=], they must be in different adaptation sets, even if they would otherwise (were they not encrypted) belong to the same adaptation set.
 
 Encrypted DASH content SHALL use either the `cenc` or the `cbcs` <dfn>protection scheme</dfn> defined in [[!CENC]]. `cenc` and `cbcs` are two mutually exclusive [=protection schemes=]. DASH content encrypted according to the `cenc` [=protection scheme=] cannot be decrypted by a DRM system supporting only the `cbcs` [=protection scheme=] and vice versa.
 
 Some [=DRM system=] implementations support both [=protection schemes=]. Even when this is the case, clients SHALL NOT concurrently consume encrypted content that uses different [=protection schemes=].
 
-[=Representations=] in the same adaptation set SHALL use the same [=protection scheme=]. [=Representations=] in different adaptation sets MAY use different [=protection schemes=]. If both [=protection schemes=] are used in the same DASH period, all encrypted [=representations=] in that period SHALL be provided using both [=protection schemes=]. That is, the only permissible scenario for using both [=protection schemes=] together is to offer them as equal alternatives to target DASH clients with different capabilities.
+Representations in the same adaptation set SHALL use the same [=protection scheme=]. Representations in different adaptation sets MAY use different [=protection schemes=]. If both [=protection schemes=] are used in the same DASH period, all encrypted representations in that period SHALL be provided using both [=protection schemes=]. That is, the only permissible scenario for using both [=protection schemes=] together is to offer them as equal alternatives to target DASH clients with different capabilities.
 
 Note: None of the CMAF presentation profiles defined in [[CMAF]] allow the presence of both `cenc` and `cbcs` content in the same period. While this is permitted by the DASH-IF guidelines - to allow DASH clients to choose between alternative [=protection schemes=] - such content would not be conforming to the presentation profiles defined in [[CMAF]].
 
 Issue: The above conflict does not necessarily exist. [GitHub IOP #388](https://github.com/Dash-Industry-Forum/DASH-IF-IOP/issues/388)
 
-[=Representations=] that contain the same media content using different [=protection schemes=] SHALL use different [=content keys=]. This protects against some cryptographic attacks [[MSPR-EncryptionModes]].
+Representations that contain the same media content using different [=protection schemes=] SHALL use different [=content keys=]. This protects against some cryptographic attacks [[MSPR-EncryptionModes]].
 
 ## Robustness ## {#CPS-robustness}
 
@@ -163,7 +163,7 @@ Note: In theory, it is possible for the [=DRM system=] initialization data to be
 
 ## Signaling presence of encrypted content ## {#CPS-mpd-scheme}
 
-The presence of a `ContentProtection` descriptor with `schemeIdUri="urn:mpeg:dash:mp4protection:2011"` on an adaptation set informs a DASH client that all [=representations=] in the adaptation set are encrypted in conformance to Common Encryption ([[!DASH]] 5.8.4.1, 5.8.5.2 and [[!CENC]] 11) and require a [=DRM system=] to provide access.
+The presence of a `ContentProtection` descriptor with `schemeIdUri="urn:mpeg:dash:mp4protection:2011"` on an adaptation set informs a DASH client that all representations in the adaptation set are encrypted in conformance to Common Encryption ([[!DASH]] 5.8.4.1, 5.8.5.2 and [[!CENC]] 11) and require a [=DRM system=] to provide access.
 
 This descriptor is present for all encrypted content ([[!DASH]] 5.8.4.1). It SHALL be defined on the adaptation set level. The `value` attribute SHALL be either `cenc` or `cbcs`, matching the used [=protection scheme=]. The `cenc:default_KID` attribute SHALL be present and have a value matching the `default_KID` in the `tenc` box. The value SHALL be expressed in lowercase UUID string notation.
 

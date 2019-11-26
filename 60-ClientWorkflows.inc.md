@@ -38,7 +38,7 @@ The exact set of capabilities that can be used and the data format used to expre
 
 To detect the set of supported capabilities, a DASH client must first determine the <dfn>required capability set</dfn> for each adaptation set. This is the set of capabilities required to present all the content in a single adaptation set and can be determined based on the following:
 
-1. Content characteristics defined in the MPD (e.g. codecs strings of the [=representations=] and the used [=protection scheme=]).
+1. Content characteristics defined in the MPD (e.g. codecs strings of the representations and the used [=protection scheme=]).
 1. [=Solution-specific logic and configuration=] (e.g. what [=robustness level=] is required).
 
 Advisement: Querying for the support of different [=protection schemes=] is currently not possible via the capability detection API of Encrypted Media Extensions [[!encrypted-media]]. To determine the supported [=protection schemes=], a DASH client must assume what the CDM supports. A bug is open on W3C EME and [a pull request exists](https://github.com/w3c/encrypted-media/pull/392) for the ISOBMFF file format bytestream. In future versions of EME, this may become possible.
@@ -55,7 +55,7 @@ The workflows defined in this document contain the necessary extension points to
 
 ## Selecting the DRM system ## {#CPS-selection-workflow}
 
-The MPD describes the [=protection scheme=] used to encrypt content, with the `default_KID` values identifying the [=content keys=] required for playback, and optionally provides the default [=DRM system configuration=] for one or more [=DRM systems=] via `ContentProtection` descriptors. It also identifies the codecs used by each [=representation=], enabling a DASH client to determine the set of required [=DRM system=] capabilities.
+The MPD describes the [=protection scheme=] used to encrypt content, with the `default_KID` values identifying the [=content keys=] required for playback, and optionally provides the default [=DRM system configuration=] for one or more [=DRM systems=] via `ContentProtection` descriptors. It also identifies the codecs used by each representation, enabling a DASH client to determine the set of required [=DRM system=] capabilities.
 
 Neither an initialization segment nor a media segment is required to select a [=DRM system=]. The MPD is the only component of the presentation used for [=DRM system=] selection.
 
@@ -94,7 +94,7 @@ The MPD provides [=DRM system configuration=] for [=DRM systems=]:
 * For `FirstDRM`, the MPD provides complete [=DRM system configuration=], including the optional `dashif:authzurl`. Two equivalent alternative URLs are provided for accessing the associated services.
 * For `SecondDRM`, the MPD does not provide the license server URL. It must be supplied at runtime.
 
-There are two encrypted [=representations=] in the adaptation set, each with a different codecs string. Both codecs strings are included in the [=required capability set=] of this adaptation set. A [=DRM system=] must support playback of both [=representations=] in order to present this adaptation set.
+There are two encrypted representations in the adaptation set, each with a different codecs string. Both codecs strings are included in the [=required capability set=] of this adaptation set. A [=DRM system=] must support playback of both representations in order to present this adaptation set.
 
 </div>
 
