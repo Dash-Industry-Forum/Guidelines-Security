@@ -19,36 +19,6 @@ Example `default_KID` in string format: `72c3ed2c-7a5f-4aad-902f-cbef1efe89a9`
 
 A <dfn>license</dfn> is a data structure in [=DRM system=] specific format that contains one or more [=content keys=] and associates them with a policy that governs the usage of the [=content keys=] (e.g. expiration time). The encapsulated [=content keys=] are typically encrypted and only readable by the [=DRM system=].
 
-# HTTPS and DASH # {#CPS-HTTPS}
-
-Transport security in HTTP-based delivery may be achieved by using HTTP over TLS (HTTPS) as specified in [[!RFC8446]]. HTTPS is a protocol for secure communication which is widely used on the Internet and also increasingly used for content streaming, mainly for protecting:
-
-* The privacy of the exchanged data from eavesdropping by providing encryption of bidirectional communications between a client and a server, and
-* The integrity of the exchanged data against forgery and tampering.
-
-As an MPD carries links to media resources, web browsers follow the W3C recommendation [[!mixed-content]]. To ensure that HTTPS benefits are maintained once the MPD is delivered, it is recommended that if the MPD is delivered with HTTPS, then the media also be delivered with HTTPS.
-
-DASH also explicitly permits the use of HTTPS as a URI scheme and hence, HTTP over TLS as a transport protocol. When using HTTPS in an MPD, one can for instance specify that all media segments are delivered over HTTPS, by declaring that all the `BaseURL`'s are HTTPS based, as follow:
-
-```xml
-<BaseURL>https://cdn1.example.com/</BaseURL>
-<BaseURL>https://cdn2.example.com/</BaseURL>
-```
-
-One can also use HTTPS for retrieving other types of data carried with a MPD that are HTTP-URL based, such as, for example, DRM [=licenses=] specified within the `ContentProtection` descriptor:
-
-```xml
-<ContentProtection
-    schemeIdUri="urn:uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-    value="DRMNAME version"
-    <dashif:laurl>https://MoviesSP.example.com/protect?license=kljklsdfiowek</dashif:laurl>
-</ContentProtection>
-```
-
-It is recommended that HTTPS be adopted for delivering DASH content. It should be noted nevertheless, that HTTPS does interfere with proxies that attempt to intercept, cache and/or modify content between the client and the TLS termination point within the CDN. Since the HTTPS traffic is opaque to these intermediate nodes, they can lose much of their intended functionality when faced with HTTPS traffic.
-
-While using HTTPS in DASH provides good protection for data exchanged between DASH servers and clients, HTTPS only protects the transport link, but does not by itself provide an enforcement mechanism for access control and usage policies on the streamed content. HTTPS itself does not imply user authentication and content authorization (or access control). This is especially the case that HTTPS provides no protection to any streamed content cached in a local buffer at a client for playback. HTTPS does not replace a DRM.
-
 # Client reference architecture for encrypted content playback # {#drm-client-components}
 
 Different software architectural components are involved in playback of encrypted content. The exact nature depends on the specific implementation. A high-level reference architecture is described here.
