@@ -4,6 +4,26 @@ The guidelines defined in this document support the creation of interoperable se
 
 While alternative interpretations may be equally valid in terms of standards conformance, services and clients created following the guidelines defined in this document can be expected to exhibit highly interoperable behavior between different implementations.
 
+# Scope # {#what-is-in-this-document}
+
+This document is an update to the DASH-IF IOP Guidelines version 4.3. The scope remains the same, giving guidelines for interoperable behaviors of clients in front of well formed encrypted content. This means:
+
+* Updated encrypted content constraints for supporting CMAF. This includes the addition of the `cbcs` scheme support and recommendation for encrypting content when available both encrypted with `cbcs` and `cenc` schemes. Note that compared to DASH-IF IOP 4.3, there are no changes in the recommendations for using `default_KID` and `pssh` elements.
+
+* Added discussions on compliance and robustness rules and their impact on the choices of the DRM client to instantiate.
+
+* Added discussions on compliance and robustness rules and their impact on the choices of the DRM client to instantiate.
+
+* Clarified periodic reauthorization mechanisms, limited now the only Period change possibility. As a consequence, key hierarchy is moved in a different section as this is used for supporting different use cases.
+
+* Clarified the client reference architecture which is an MSE/EME type of player, more precisely connecting  between the DASH/DASH-IF/CMAF content format specifications and W3C EME.
+
+In addition, this document:
+
+* Introduces the **Interoperable license request model** that describes how players take content and consume it in ways that make sense on a platform that supports EME. From the Platform capabilities discovery and DRM selection to the license request protocol, this optional request model allows a player to obtain authorization tokens that can be used for retrieving licenses and content keys from a license server for rendering content. Any processing step in the proposed model can be redefined by the application logic.
+
+* Introduces DASH-IF XML schema where two elements are defined for supporting the license request model. These elements are namely the `laurl` (license acquisition server URL) and `authzurl` (Authorization server URL).
+
 # Interpretation # {#interpretation}
 
 Requirements in this document describe service and client behaviors that DASH-IF considers interoperable.
