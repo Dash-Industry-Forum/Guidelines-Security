@@ -50,10 +50,6 @@ Some [=DRM system=] implementations support both [=protection schemes=]. Even wh
 
 Representations in the same adaptation set SHALL use the same [=protection scheme=]. Representations in different adaptation sets MAY use different [=protection schemes=]. If both [=protection schemes=] are used in the same DASH period, all encrypted representations in that period SHALL be provided using both [=protection schemes=]. That is, the only permissible scenario for using both [=protection schemes=] together is to offer them as equal alternatives to target DASH clients with different capabilities.
 
-Note: None of the CMAF presentation profiles defined in [[CMAF]] allow the presence of both `cenc` and `cbcs` content in the same period. While this is permitted by the DASH-IF guidelines - to allow DASH clients to choose between alternative [=protection schemes=] - such content would not be conforming to the presentation profiles defined in [[CMAF]].
-
-Issue: The above conflict does not necessarily exist. [GitHub IOP #388](https://github.com/Dash-Industry-Forum/DASH-IF-IOP/issues/388)
-
 Representations that contain the same media content using different [=protection schemes=] SHALL use different [=content keys=]. This protects against some cryptographic attacks [[MSPR-EncryptionModes]].
 
 ## Robustness ## {#CPS-robustness}
