@@ -103,7 +103,7 @@ In addition to the MPD, a DASH client can use [=solution-specific logic and conf
 The purpose of the [=DRM system=] selection workflow is to select a single [=DRM system=] that is capable of decrypting a meaningful subset of the adaptation sets selected for playback. The selected [=DRM system=] will meet the following criteria:
 
 1. It is actually implemented by the [=media platform=].
-1. It supprots a set of capabilities sufficient to present an acceptable set of adaptation sets.
+1. It supports a set of capabilities sufficient to present an acceptable set of adaptation sets.
 1. The necessary [=DRM system configuration=] for this [=DRM system=] is available.
 
 It may be that the selected [=DRM system=] is only able to decrypt a subset of the encrypted adaptation sets selected for playback. See also [[#CPS-unavailable-keys]].
