@@ -12,11 +12,9 @@ This document is an update to the DASH-IF IOP Guidelines version 4.3. The scope 
 
 * Added discussions on compliance and robustness rules and their impact on the choices of the DRM client to instantiate.
 
-* Added discussions on compliance and robustness rules and their impact on the choices of the DRM client to instantiate.
-
 * Clarified periodic reauthorization mechanisms, limited now the only Period change possibility. As a consequence, key hierarchy is moved in a different section as this is used for supporting different use cases.
 
-* Clarified the client reference architecture which is an MSE/EME type of player, more precisely connecting  between the DASH/DASH-IF/CMAF content format specifications and W3C EME.
+* Clarified the client reference architecture which is an MSE/EME type of player, more precisely connecting between the DASH/DASH-IF/CMAF content format specifications and W3C EME.
 
 In addition, this document:
 
