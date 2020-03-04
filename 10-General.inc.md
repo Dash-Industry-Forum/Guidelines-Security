@@ -42,7 +42,7 @@ A DASH presentation MAY provide some or all adaptation sets in encrypted form, r
 
 In a DASH presentation, every representation in an adaptation set SHALL be protected using the same [=content key=] (identified by the same `default_KID`).
 
-Note: This means that if representations use different [=content keys=], they must be in different adaptation sets, even if they would otherwise (were they not encrypted) belong to the same adaptation set.
+This means that if representations use different [=content keys=], they must be in different adaptation sets, even if they would otherwise (were they not encrypted) belong to the same adaptation set. A `urn:mpeg:dash:adaptation-set-switching:2016` supplemental property descriptor ([[!DASH]] 5.3.3.5) SHALL be used to signal that such adaptation sets are suitable for switching.
 
 Encrypted DASH content SHALL use either the `cenc` or the `cbcs` <dfn>protection scheme</dfn> defined in [[!CENC]]. `cenc` and `cbcs` are two mutually exclusive [=protection schemes=]. DASH content encrypted according to the `cenc` [=protection scheme=] cannot be decrypted by a DRM system supporting only the `cbcs` [=protection scheme=] and vice versa.
 
@@ -74,7 +74,7 @@ Policy associated with content can require a [=DRM system=] implementation to co
 
 Multiple implementations of a [=DRM system=] may be available to a DASH client, potentially at different [=robustness levels=]. The DASH client must choose at media load time which [=DRM system=] implementation to use. However, the required [=robustness level=] may be different for different device types and is not expressed in the MPD. This decision is a matter of policy and is impossible for a DASH client to determine on its own. Therefore, [=solution-specific logic and configuration=] must inform the DASH client of the correct choice.
 
-A DASH client SHALL enable [=solution-specific logic and configuration=] to specify the required [=robustness level=]. Depending on which [=DRM system=] is used, this can be implemented by:
+A DASH client SHALL enable [=solution-specific logic and configuration=] to specify the [=robustness level=] of the [=DRM system=] implementation to be used. Depending on which [=DRM system=] is used, this can be implemented by:
 
 1. Changing the mapping of [=DRM system=] to [=key system=] in EME-based implementations (see [[#CPS-EME]]).
 1. Specifying a minimum [=robustness level=] during capability detection (see [[#CPS-system-capabilities]]).
@@ -107,7 +107,9 @@ Note: Placing the `pssh` boxes in the MPD has become common for purposes of oper
 
 Protected content MAY be published without any `pssh` boxes in both the MPD and media segments. All [=DRM system configuration=] can be provided at runtime, including the `pssh` box data. See also [[#CPS-mpd-drm-config]].
 
-Media segments MAY contain `moof/pssh` boxes ([[!CMAF]] 7.4.3) to provide updates to [=DRM system=] internal state (e.g. to supply new [=leaf keys=] in a [[#CPS-KeyHierarchy|key hierarchy]]). These state updates are transparent to the DASH client - the [=media platform=] is expected to intercept the `moof/pssh` boxes and supply them directly to the active [=DRM system=]. See [[#CPS-default_KID-hierarchy]] for an example.
+Media segments MAY contain `moof/pssh` boxes ([[!CMAF]] 7.4.3) to provide updates to [=DRM system=] internal state (e.g. to supply new [=leaf keys=] in a [[#CPS-KeyHierarchy|key hierarchy]]). See [[#CPS-default_KID-hierarchy]] for an example.
+
+Note: These state updates may be transparent to a DASH client on some [=media platforms=] that intercept the `moof/pssh` boxes and supply them directly to the active [=DRM system=]; on other [=media platforms=], the DASH client may need to extract and forward the `moof/pssh` boxes to the [=DRM system=].
 
 ## Content protection data in CMAF containers ## {#CPS-cmaf-structure}
 

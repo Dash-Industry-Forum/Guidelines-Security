@@ -15,7 +15,7 @@ node "Data protected by DRM system" {
 [Authorization service] as Authz
 
 Client -down-> DASH : Get MPD\nGet segments
-Client -> MediaPlatform : Provide segments
+Client -> MediaPlatform : Provide encrypted segments/samples
 Client -down-> DRM : Activate\nProvide licenses
 
 DRM -> MediaPlatform : Decrypted samples
