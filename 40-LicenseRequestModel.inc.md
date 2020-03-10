@@ -14,17 +14,15 @@ This license request model defines a mechanism for achieving both goals. This re
 * DASH clients can execute DRM workflows without [=solution-specific logic and configuration=].
 * Custom code specific to a license server implementation is limited to backend business logic.
 
-These benefits increase in value with the size of the solution, as they reduce the development cost required to offer playback of encrypted content on a wide range of DRM-capable client platforms using different [=DRM systems=], with [=licenses=] potentially served by different license server implementations.
-
 ## Proof of authorization ## {#CPS-lr-model-authz}
 
 An <dfn>authorization token</dfn> is a [[!jwt|JSON Web Token]] used to prove to a license server that the caller has the right to use one or more [=content keys=] under certain conditions. Attaching this proof of authorization to a license request is optional, allowing for architectures where a "license proxy" performs authorization checks in a manner transparent to the DASH client.
 
-The basic structural requirements for [=authorization tokens=] are defined by [[!jwt]] and [[!jws]]. This document adds some additional constraints to ensure interoperability. Beyond that, the license server implementation is what defines the contents of the [=authorization token=] (the set of claims it contains), as the data needs to express implementation-specific license server business logic parameters that cannot be generalized.
+The basic structural requirements for [=authorization tokens=] are defined in [[!jwt]] and [[!jws]]. This document adds some additional constraints to ensure interoperability. Beyond that, the license server implementation is what defines the contents of the [=authorization token=] (the set of claims it contains), as the data needs to express implementation-specific license server business logic parameters that cannot be generalized.
 
 Note: An [=authorization token=] is divided into a header and body. The distinction between the two is effectively irrelevant and merely an artifact of the [[!jwt|JWT specification]]. License servers may use existing fields and define new fields in both the header and the body.
 
-Implementations SHALL process claims listed in [[!jwt]] 4.1 "Registered Claim Names" when they are present (e.g. `exp` "Expiration Time" and `nbf` "Not Before"). The `typ` header parameter ([[!jwt]] 5.1) SHOULD NOT be present. The `alg` header parameter defined in [[!jws]] SHALL be present.
+Implementations SHALL process claims listed in [[!jwt]] section 4.1 "Registered Claim Names" when they are present (e.g. `exp` "Expiration Time" and `nbf` "Not Before"). The `typ` header parameter ([[!jwt]] section 5.1) SHOULD NOT be present. The `alg` header parameter defined in [[!jws]] SHALL be present.
 
 <div class="example">
 JWT headers, specifying digital signature algorithm and expiration time (general purpose fields):
@@ -50,7 +48,7 @@ JWT body with list of authorized [=content key=] IDs (an example field that coul
 The above data sets are serialized and digitally signed to arrive at the final form of the [=authorization token=]: `eyJhbGciOiJIUzI1NiIsImV4cCI6IjE1MTYyMzkwMjIifQ.eyJhdXRob3JpemVkX2tpZHMiOlsiMTYxMWYwYzgtNDg3Yy00NGQ0LTliMTktODJlNWE2ZDU1MDg0IiwiZGIyZGFlOTctNmI0MS00ZTk5LTgyMTAtNDkzNTAzZDU2ODFiIl19.tBvW6XVPHBRp1JEwItsVnbHwIqoqnQAVQfTV9PGMkIU`
 </div>
 
-[=Authorization tokens=] are issued by an authorization service, which is part of a solution's business logic. The authorization service has access to project-specific context that it needs to make its decisions (e.g. the active session, user identification and database of purchases/entitlements). A single authorization service can be used to issue [=authorization tokens=] for multiple license servers, simplifying architecture in solutions where multiple license server vendors are used.
+[=Authorization tokens=] are issued by an authorization service, which is part of a solution's business logic. The authorization service has access to the project-specific context that it needs to make its decisions (e.g. the active session, user identification and database of purchases/entitlements). A single authorization service can be used to issue [=authorization tokens=] for multiple license servers, simplifying architecture in solutions where multiple license server vendors are used.
 
 <figure>
 	<img src="Diagrams/LicenseRequestModel-BaselineArchitecture.png" />
@@ -112,7 +110,7 @@ DASH clients SHALL follow HTTP redirects signaled by the authorization service.
 
 ### Issuing authorization tokens ### {#CPS-lr-model-authz-issuing}
 
-The mechanism of performing authorization checks is implementation-specific. Common approaches might be to identify the user from a session cookie, query the entitlements/purchases database to identify what rights are assigned to the user and then assemble a suitable authorization token, taking into account the license policy configuration that applies to the [=content keys=] being requested.
+The mechanism of performing authorization checks is implementation-specific. Common approaches might be to identify the user from a session cookie, query the entitlements/purchases database to identify what rights are assigned to the user and then assemble a suitable authorization token, taking into account the license policy configuration that applies to the [=content keys=] being requested. The [=DRM system=] may be involved in order to ensure secure authentication of the device.
 
 The structure of the [=authorization tokens=] is unconstrained beyond the basic requirements defined in [[#CPS-lr-model-authz]]. Authorization services need to issue tokens that match the expectations of license servers that will be using these tokens. If multiple different license server implementations are served by the same authorization service, the path or query string parameters in the authorization service URL allow the service to identify which output format to use.
 
@@ -198,7 +196,7 @@ A problem record SHALL contain a short human-readable description of the problem
 
 Note: The `detail` field is intended to be displayed to users of a DASH client, not to developers. The description should be helpful to the user whose device the DASH client is running on.
 
-During [[#CPS-activation-workflow|DRM system activation]], it is possible that multiple failures occur. DASH clients SHOULD be capable of displaying a list of error messages to the end-user and SHOULD deduplicate multiple records with the same `type` (e.g. if an [=authorization token=] expires, this expiration may cause failures when requesting 5 [=content keys=] but should result in at most 1 error message being displayed).
+During [[#CPS-activation-workflow|DRM system activation]], it is possible that multiple failures occur. DASH clients SHOULD be capable of displaying a list of error messages to the end-user and SHOULD deduplicate multiple records with the same `type` (e.g. if an [=authorization token=] expires, this expiration may cause failures when requesting five [=content keys=] but should result in at most one error message being displayed).
 
 Note: Merely the fact that a problem record was returned does not mean that it needs to be presented to the user or acted upon in other ways. The user may still experience successful playback in the presence of some failed requests. See [[#CPS-unavailable-keys]].
 

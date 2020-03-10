@@ -31,6 +31,10 @@ Abstract: None
 #include "References.json"
 </pre>
 
+<pre boilerplate="conformance">
+<!-- This disables the RFC2119 conformance section, as we use custom DASH-IF specific text for this.  -->
+</pre>
+
 <pre boilerplate="logo">
 <a href="https://dashif.org/"><img src="Images/DASH-IF.png" /></a>
 </pre>
