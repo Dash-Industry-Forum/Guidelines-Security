@@ -17,7 +17,7 @@ A <dfn>content key</dfn> is a 128-bit key used by a [=DRM system=] to make conte
 Example `default_KID` in string format: `72c3ed2c-7a5f-4aad-902f-cbef1efe89a9`
 </div>
 
-A <dfn>license</dfn> is a data structure in [=DRM system=] specific format that contains one or more [=content keys=] and associates them with a policy that governs the usage of the [=content keys=] (e.g. expiration time). The encapsulated [=content keys=] are typically encrypted and only readable by the [=DRM system=].
+A <dfn>license</dfn> is a data structure in a [=DRM system=] specific format that contains one or more [=content keys=] and associates them with a policy that governs the usage of the [=content keys=] (e.g. expiration time). The encapsulated [=content keys=] are typically encrypted and only readable by the [=DRM system=].
 
 # Client reference architecture for encrypted content playback # {#drm-client-components}
 
