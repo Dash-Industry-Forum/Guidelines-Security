@@ -161,6 +161,8 @@ When configuring a [=DRM system=] to decrypt content using multiple [=content ke
 
 Note: In theory, it is possible for the [=DRM system=] initialization data to be the same for different [=content keys=]. In practice, the `default_KID` is often included in the initialization data so this is unlikely. Nevertheless, DASH clients cannot assume that using equal initialization data implies anything about equality of the [=DRM system configuration=] or the [=content key=] - the `default_KID` is the factor identifying the scope in which a single [=content key=] is to be used. See [[#CPS-default_KID]].
 
+The [=DRM system configuration=] MAY change over time, both due to MPD updates in live services and due to runtime changes in the [=solution-specific logic and configuration=]. A typical example of runtime changse would be using a unique license server URL for each license request.
+
 ## Signaling presence of encrypted content ## {#CPS-mpd-scheme}
 
 The presence of a `ContentProtection` descriptor with `schemeIdUri="urn:mpeg:dash:mp4protection:2011"` on an adaptation set informs a DASH client that all representations in the adaptation set are encrypted in conformance to Common Encryption ([[!DASH]] sections 5.8.4.1 and 5.8.5.2 and [[!CENC]] section 11) and require a [=DRM system=] to provide access.

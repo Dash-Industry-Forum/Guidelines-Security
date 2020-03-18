@@ -6,8 +6,7 @@ To present encrypted content a DASH client needs to:
     * During selection, [[#CPS-system-capabilities|the set of desired DRM system capabilities and the supported capabilities is examined]] to identify suitable candidate systems.
 1. [[#CPS-activation-workflow|Activate the selected DRM system and configure it to decrypt content.]]
     * During activation, [[#CPS-license-request-workflow|acquire any missing content keys and the licenses that govern their use]].
-
-A client also needs to take observations at runtime to detect the need for different [=content keys=] to be used (e.g. in live services that change the [=content keys=] periodically) and to detect [=content keys=] becoming unavailable (e.g. due to expiration of access rights).
+1. [[#CPS-unavailable-keys|Monitor for changes in the availability of content keys and in the content protection attributes of the media stream]] and take required action to ensure that playback can continue (e.g. live services may periodically change the [=content keys=], requiring new licenses to be obtained, or existing licenses can simply expire and need renewal).
 
 This chapter defines the recommended DASH client workflows for interacting with [=DRM systems=] in these aspects.
 
@@ -205,11 +204,9 @@ For historical reasons, platform APIs often implement [=DRM system=] activation 
 
 Note: The batching may, for example, be accomplished by concatenating all the `pssh` boxes for the different [=content keys=]. Support for this type of batching among DRM systems and platform APIs remains uncommon, despite the potential efficiency gains from reducing the number of license requests triggered.
 
-### Handling unavailability of content keys ### {#CPS-unavailable-keys}
+## Handling unavailability of content keys ## {#CPS-unavailable-keys}
 
 It is possible that not all of the encrypted adaptation sets selected for playback can actually be played back (e.g. because a [=content key=] for ultra-HD content is only authorized for use by implementations with a high [=robustness level=]). The unavailability of one or more [=content keys=] SHOULD NOT be considered a fatal error condition as long as at least one audio and at least one video adaptation set remains available for playback (assuming both content types are initially selected for playback). This logic MAY be overridden by solution specific business logic to better reflect end-user expectations.
-
-The set of available [=content keys=] can change over time (e.g. due to [=license=] expiration or due to new periods in the presentation requiring different content keys). A DASH client SHALL monitor the set of `default_KID` values that are required for playback and either request the [=DRM system=] to make these [=content keys=] available or deselect the affected adaptation sets when the [=content keys=] become unavailable. Conceptually, any such change can be handled by re-executing the [[#CPS-selection-workflow|DRM system selection]] and [[#CPS-activation-workflow|activation workflows]], although platform APIs may also offer more fine-grained update capabilities.
 
 A DASH client can request a [=DRM system=] to enable decryption using any set of [=content keys=] (if it has the necessary [=DRM system configuration=]). However, this is only a request and playback can be countermanded at multiple stages of processing by different involved entities.
 
@@ -226,7 +223,17 @@ It may be appropriate for a DASH client to avoid buffering data for encrypted ad
 
 Note: The DASH client should still download the data into intermediate buffers for faster startup and simply defer submitting it to the [=media platform=] API until key availability is confirmed.
 
-If a [=content key=] expires during playback, it is common for a [=media platform=] to pause playback until the [=content key=] can be refreshed with a new [=license=] or until data encrypted with the now-unusable [=content key=] is removed from buffers. DASH clients SHOULD acquire new [=licenses=] in advance of [=license=] expiration. Alternatively, DASH clients should implement appropriate recovery/fallback behavior to ensure a minimally disrupted user experience in situations where some [=content keys=] remain available.
+## Handling changes in required and available content keys ## {#CPS-changing-keys}
+
+The set of available [=content keys=] can change over time (e.g. due to [=license=] expiration or due to new periods in the presentation requiring different content keys).
+
+If a [=content key=] expires during playback it is common for a [=media platform=] to pause playback until the [=content key=] can be refreshed with a new [=license=] or until data encrypted with the now-unusable [=content key=] is removed from buffers. DASH clients SHOULD acquire new [=licenses=] in advance of [=license=] expiration and SHOULD implement appropriate recovery/fallback behavior to ensure a minimally disrupted user experience in situations where some [=content keys=] remain available even after attempted license renewal.
+
+A DASH client SHALL monitor the set of `default_KID` values that are required for playback and either request the [=DRM system=] to make these [=content keys=] available or deselect the affected adaptation sets when the [=content keys=] become unavailable. Conceptually, any such change can be handled by re-executing the [[#CPS-selection-workflow|DRM system selection]] and [[#CPS-activation-workflow|activation workflows]], although platform APIs may also offer more fine-grained update capabilities.
+
+Note: Some CDM implementations emit license renewal signals using the EME `license-renewal` [[!encrypted-media]] message. CDMs are not obligated to implement this mechanism and DASH clients cannot rely on this message as the only source of expiration information. In particular, the `MediaKeySession.expiration` property needs to be monitored to stay informed of upcoming license expiration.
+
+A DASH client MAY enable [=solution-specific logic and configuration=] to disable proactive license acquisition, for example to enable scenarios where [=solution-specific logic and configuration=] explicitly triggers license requests at desired times and with desired parameters.
 
 ## Content protection policies ## {#CPS-protection-policies}
 
