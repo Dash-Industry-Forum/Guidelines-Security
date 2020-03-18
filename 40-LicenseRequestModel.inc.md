@@ -148,6 +148,28 @@ Note: During [=license=] issuance, the license server may further constrain the 
 
 [=Authorization tokens=] SHALL be returned by an authorization service using JWS Compact Serialization [[!jws]] (the `aaa.bbb.ccc` format). The serialized form of an [=authorization token=] SHOULD NOT exceed 5000 characters to ensure that a license server does not reject a license request carrying the token due to excessive HTTP header size.
 
+### Embedding secrets in authorization tokens ### {#CPS-lr-model-authz-secrets}
+
+Custom data fields on the [=authorization token=] MAY be encrypted to protect secrets within, with the data format, encryption method and key management scheme defined by the license server. These guidelines do not define any general recommendation for passing encrypted data through [=authorization tokens=].
+
+Note: The JSON Web Token [[!jwt]] data format used for [=authorization tokens=] is based on JSON Web Signature [[!jws]], which only supports signing without encryption. While JSON Web Encryption [[jwe]] does define an encrypted data format, this is a completely separate data format from JSON Web Token.
+
+<div class="example">
+Example JWT body containing a secret (client IP address, encrypted for privacy):
+
+<xmp highlight="json">
+{
+    "authorized_kids": [
+        "1611f0c8-487c-44d4-9b19-82e5a6d55084",
+        "db2dae97-6b41-4e99-8210-493503d5681b"
+    ],
+    "client_ip_encrypted": "460e39f04d204c6233757feba31e8c1828019179dd651c55b14ab6c78e745148"
+}
+</xmp>
+
+This example uses a custom data format for the encrypted data.
+</div>
+
 ### Attaching authorization tokens to license requests ### {#CPS-lr-model-authz-using}
 
 [=Authorization tokens=] are attached to license requests using the `Authorization` HTTP request header, signaling the `Bearer` authorization type.
