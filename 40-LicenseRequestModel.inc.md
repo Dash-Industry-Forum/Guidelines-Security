@@ -14,6 +14,8 @@ This license request model defines a mechanism for achieving both goals. This re
 * DASH clients can execute DRM workflows without [=solution-specific logic and configuration=].
 * Custom code specific to a license server implementation is limited to backend business logic.
 
+These benefits increase in value with the size of the solution, as they reduce the development cost required to offer playback of encrypted content on a wide range of DRM-capable client platforms using different [=DRM systems=], with [=licenses=] potentially served by different license server implementations.
+
 ## Proof of authorization ## {#CPS-lr-model-authz}
 
 An <dfn>authorization token</dfn> is a [[!jwt|JSON Web Token]] used to prove to a license server that the caller has the right to use one or more [=content keys=] under certain conditions. Attaching this proof of authorization to a license request is optional, allowing for architectures where a "license proxy" performs authorization checks in a manner transparent to the DASH client.

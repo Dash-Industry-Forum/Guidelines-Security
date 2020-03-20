@@ -7,7 +7,7 @@ The user's level of access to content is governed by the issuance (or not) of [=
 1. Defining an expiration time on the license.
 1. Changing the [=content key=] to one that is not yet available to DASH clients, thereby triggering [[#CPS-activation-workflow|DRM system activation]] for the new [=content key=].
 
-Not every [=DRM system=] supports real-time license expiration, some widely used implementations only check license validity at activation time. Therefore the latter option is a more universally applicable method to force re-evaluation of access rights. As changing the [=content key=] is only possible on DASH period boundaries as the initialisation segment is updated, live DASH presentations SHOULD create a new period in which content is encrypted with new [=content keys=] to force re-evaluation of user's access rights.
+Not every [=DRM system=] supports real-time license expiration - some widely used implementations only check license validity at activation time. Therefore the latter option is a more universally applicable method to force re-evaluation of access rights. As changing the [=content key=] is only possible on DASH period boundaries as the initialisation segment is updated, live DASH presentations SHOULD create a new period in which content is encrypted with new [=content keys=] to force re-evaluation of user's access rights.
 
 Note: Changing the [=content keys=] does not increase the cryptographic security of content protection. The term *periodic re-authorization* is therefore used here instead of *key rotation*, to maintain focus on the goal and not the mechanism.
 
@@ -83,7 +83,7 @@ An example of a Clear Key `ContentProtection` descriptor using `laurl` is as fol
 </MPD>
 ```
 
-Parts of the MPD structure that are not relevant for this chapter have been omitted, this is not a fully functional MPD file.
+Parts of the MPD structure that are not relevant for this chapter have been omitted - this is not a fully functional MPD file.
 </div>
 
 # XML Schema for DASH-IF MPD extensions # {#CPS-schema}

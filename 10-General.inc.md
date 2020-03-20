@@ -52,7 +52,7 @@ Some [=DRM system=] implementations support both [=protection schemes=]. Even wh
 
 Representations in the same adaptation set SHALL use the same [=protection scheme=]. Representations in different adaptation sets MAY use different [=protection schemes=]. If both [=protection schemes=] are used in the same period, all encrypted representations in that period SHALL be provided using both [=protection schemes=]. That is, the only permissible scenario for using both [=protection schemes=] together is to offer them as equal alternatives to target DASH clients with different capabilities.
 
-Representations that contain the same media content using different [=protection schemes=] SHALL use different [=content keys=]. This protects against some cryptographic attacks [[MSPR-EncryptionModes]].
+Representations that contain the same media content using different [=protection schemes=] SHOULD use different [=content keys=]. This protects against some cryptographic attacks [[MSPR-EncryptionModes]].
 
 ## Robustness ## {#CPS-robustness}
 
@@ -105,7 +105,7 @@ Note: This document uses the `cenc:` prefix to reference the XML namespace `urn:
 
 Initialization segments SHOULD NOT contain any `moov/pssh` box ([[!CMAF]], section 7.4.3) and DASH clients MAY ignore such boxes when encountered. Instead, `pssh` boxes required for [=DRM system=] initialization are part of the [=DRM system configuration=] and SHOULD be placed in the MPD as `cenc:pssh` elements in [=DRM system=] specific `ContentProtection` descriptors.
 
-Note: Placing the `pssh` boxes in the MPD has become common for purposes of operational agility, it is often easier to update MPD files than rewrite initialization segments when the default [=DRM system configuration=] needs to be updated or when a new [=DRM system=] needs to be supported. Furthermore, in some scenarios the appropriate set of `pssh` boxes is not known when the initialization segment is created.
+Note: Placing the `pssh` boxes in the MPD has become common for purposes of operational agility - it is often easier to update MPD files than rewrite initialization segments when the default [=DRM system configuration=] needs to be updated or when a new [=DRM system=] needs to be supported. Furthermore, in some scenarios the appropriate set of `pssh` boxes is not known when the initialization segment is created.
 
 Protected content MAY be published without any `pssh` boxes in both the MPD and media segments. All [=DRM system configuration=] can be provided at runtime, including the `pssh` box data. See also [[#CPS-mpd-drm-config]].
 
@@ -146,7 +146,7 @@ Note: While DASH only requires the presence of `moof/pssh` in the first CMAF chu
 
 A DASH client needs to recognize encrypted content and activate a suitable [=DRM system=], configuring it to decrypt content. The MPD informs a DASH client of the [=protection scheme=] used to protect content, identifies the [=content keys=] that are used and optionally provides the default [=DRM system configuration=] for a set of [=DRM systems=].
 
-The <dfn>DRM system configuration</dfn> is the complete data set required for a DASH client to activate a single [=DRM system=] and configure it to decrypt content using a single [=content key=]. It is supplied by a combination of XML elements in the MPD and/or [=solution-specific logic and configuration=]. The [=DRM system configuration=] often contains:
+The <dfn>DRM system configuration</dfn> is the complete data set required for a DASH client to activate a single [=DRM system=] and configure it to decrypt content using a single [=content key=]. <b>It is supplied by a combination of XML elements in the MPD and/or [=solution-specific logic and configuration=]</b>. The [=DRM system configuration=] often contains:
 
 * DRM system initialization data in the form of a DRM system specific `pssh` box (as defined in [[!CENC]]).
 * DRM system initialization data in some other DRM system specific form (e.g. `keyids` JSON structure used by [[#CPS-AdditionalConstraints-W3C|W3C Clear Key]])
@@ -165,7 +165,7 @@ Note: In theory, it is possible for the [=DRM system=] initialization data to be
 
 The presence of a `ContentProtection` descriptor with `schemeIdUri="urn:mpeg:dash:mp4protection:2011"` on an adaptation set informs a DASH client that all representations in the adaptation set are encrypted in conformance to Common Encryption ([[!DASH]] sections 5.8.4.1 and 5.8.5.2 and [[!CENC]] section 11) and require a [=DRM system=] to provide access.
 
-This descriptor is present for all encrypted content ([[!DASH]] section 5.8.4.1). It SHALL be defined on the adaptation set level. The `value` attribute shall be either `cenc` or `cbcs`, matching the used [=protection scheme=] ([[!DASH]] section 5.8.5.2). The `cenc:default_KID` attribute SHALL be present and have a value matching the `default_KID` in the `tenc` box. The value SHALL be expressed in lowercase UUID string notation.
+This descriptor is present for all encrypted content ([[!DASH]] section 5.8.4.1). It SHALL be defined on the adaptation set level. The `value` attribute has to be matching the used protection scheme ([[!DASH]] section 5.8.5.2). The `cenc:default_KID` attribute SHALL be present and have a value matching the `default_KID` in the `tenc` box. The value SHALL be expressed in lowercase UUID string notation.
 
 <div class="example">
 Signaling an adaptation set encrypted using the `cbcs` scheme and with a [=content key=] identified by `34e5db32-8625-47cd-ba06-68fca0655a72`.
@@ -214,7 +214,7 @@ This logic applies to all scenarios that make use of additional keys, regardless
 
 A DASH service SHOULD supply a default [=DRM system configuration=] in the MPD for all supported [=DRM systems=] in all encrypted adaptation sets. This enables playback without the need for DASH client customization or additional client-side configuration. [=DRM system configuration=] MAY also be supplied by [=solution-specific logic and configuration=], replacing or enhancing the defaults provided in the MPD.
 
-Any number of `ContentProtection` descriptors ([[!DASH]] section 5.8.4.1) MAY be present in the MPD to provide [=DRM system configuration=]. These descriptors SHALL be defined on the adaptation set level. The contents MAY be ignored by the DASH client if overridden by [=solution-specific logic and configuration=], the [=DRM system configuration=] in the MPD simply provides default values known at content authoring time.
+Any number of `ContentProtection` descriptors ([[!DASH]] section 5.8.4.1) MAY be present in the MPD to provide [=DRM system configuration=]. These descriptors SHALL be defined on the adaptation set level. The contents MAY be ignored by the DASH client if overridden by [=solution-specific logic and configuration=] - the [=DRM system configuration=] in the MPD simply provides default values known at content authoring time.
 
 A `ContentProtection` descriptor providing a default [=DRM system configuration=] SHALL use  `schemeIdUri="urn:uuid:<systemid>"` to identify the [=DRM system=], with the `<systemid>` matching a value in the [DASH-IF system-specific identifier registry](https://dashif.org/identifiers/content_protection/). The `value` attribute of the `ContentProtection` descriptor SHOULD contain the DRM system name and version number in a human readable form (for diagnostic purposes).
 
