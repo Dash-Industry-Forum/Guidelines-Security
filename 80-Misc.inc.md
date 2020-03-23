@@ -2,12 +2,12 @@
 
 In a live DASH presentation the rights of the user can be different for different programs included in the presentation. This chapter describes recommended mechanisms for forcing rights to be re-evaluated at program boundaries.
 
-The user's level of access to content is governed by the issuance (or not) of [=licenses=] with [=content keys=] and the policy configuration carried by the [=licenses=]. The license server is the authority on what rights are assigned to the user. To force re-evaluation of rights, a service must force a new license request to be made. This can be accomplished by:
+The user's level of access to content is governed by the issuance (or not) of [=licenses=] with [=content keys=] and the policy configuration carried by the [=licenses=]. The authorization server is the authority on what rights are assigned to the user and this is enforced by the license server. To force re-evaluation of rights, a service must force a new license request to be made. This can be accomplished by:
 
 1. Defining an expiration time on the license.
 1. Changing the [=content key=] to one that is not yet available to DASH clients, thereby triggering [[#CPS-activation-workflow|DRM system activation]] for the new [=content key=].
 
-Not every [=DRM system=] supports real-time license expiration - some widely used implementations only check license validity at activation time. Therefore the latter option is a more universally applicable method to force re-evaluation of access rights. As changing the [=content key=] is only possible on DASH period boundaries, live DASH presentations SHOULD create a new period in which content is encrypted with new [=content keys=] to force re-evaluation of user's access rights.
+Not every [=DRM system=] supports real-time license expiration - some widely used implementations only check license validity at activation time. Therefore the latter option is a more universally applicable method to force re-evaluation of access rights. As changing the [=content key=] is only possible on DASH period boundaries as the initialisation segment is updated, live DASH presentations SHOULD create a new period in which content is encrypted with new [=content keys=] to force re-evaluation of user's access rights.
 
 Note: Changing the [=content keys=] does not increase the cryptographic security of content protection. The term *periodic re-authorization* is therefore used here instead of *key rotation*, to maintain focus on the goal and not the mechanism.
 
@@ -34,7 +34,7 @@ This layering enables the user's rights to content to be evaluated in two ways:
 1. Changing the [=root key=] invokes the full re-evaluation workflow as a new license request must be made by the DASH client.
 1. Changing the [=leaf key=] invokes an evaluation of the rights granted by the [=license=] for the [=root key=] and processing of any additional policy attached to the [=leaf key=]. If result of this evaluation indicates the [=leaf key=] cannot be used, the [=DRM system=] will signal playback failure to the DASH client.
 
-Changing the [=root key=] is equivalent to changing the [=content key=] in terms of MPD signaling, requiring a new period to be started. The [=leaf key=] can be changed in any media segment and does not require modification of the MPD. [=Leaf keys=] SHOULD NOT be changed within the same program. Changing [=leaf keys=] on a regular basis does not increase cryptographic security.
+Changing the [=root key=] is equivalent to changing the [=content key=] in terms of content and MPD signaling, requiring a new period to be started. The [=leaf key=] can be changed in any media segment and does not require modification of the MPD. [=Leaf keys=] SHOULD NOT be changed within the same program. Changing [=leaf keys=] on a regular basis does not increase cryptographic security.
 
 Note: A DASH service with a key hierarchy is sometimes referred to as using "internal key rotation".
 

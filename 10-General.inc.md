@@ -4,7 +4,7 @@ DASH-IF provides guidelines for using multiple [=DRM systems=] to access a DASH 
 
 <figure>
 	<img src="Diagrams/DrmBigPicture.png" />
-	<figcaption>A [=DRM system=] cooperates with the device's [=media platform=] to enable playback of encrypted content while protecting the decrypted samples and the [=content key=] against potential attacks. The DASH-IF implementation guidelines focus on the signaling in the DASH presentation and the interactions of the DASH client with other components.</figcaption>
+	<figcaption>A [=DRM system=] cooperates with the device's [=media platform=] to enable playback of encrypted content while protecting the decrypted samples and [=content keys=] against potential attacks. The DASH-IF implementation guidelines focus on the signaling in the DASH presentation and the interactions of the DASH client with other components.</figcaption>
 </figure>
 
 This document does not define any [=DRM system=]. DASH-IF maintains a registry of [=DRM system=] identifiers on [dashif.org](https://dashif.org/identifiers/content_protection/).
@@ -34,23 +34,25 @@ This document assumes that the [=media platform=] exposes its encrypted content 
 
 The [=media platform=] often implements at least one [=DRM system=]. Additional [=DRM system=] implementations can be included as libraries in the app.
 
+A <dfn>DRM system</dfn> is an implementation of [=content keys=] management. It is made of two main components: A license server for generating licenses and a DRM client for processing licenses and enforcing the associated policies. On some paltforms, the DRM client may handle the decryption of samples while on other platforms, decryption is handled by e.g. hardware elements the DRM client interacts with.
+
 The guidelines in this document define recommended workflows and default behavior for a generic DASH client implementation that performs playback of encrypted content. In many scenarios, the default behavior is sufficient. When deviation from the default behavior is desired, <dfn>solution-specific logic and configuration</dfn> can be provided by the app. Extension points are explicitly defined in the workflows at points where solution-specific decisions are most appropriate.
 
 # Content encryption and DRM # {#CPS-encryption-and-drm}
 
-A DASH presentation MAY provide some or all adaptation sets in encrypted form, requiring the use of a <dfn>DRM system</dfn> to decrypt the content for playback. The duty of a [=DRM system=] is to decrypt content while preventing disclosure of the [=content key=] and misuse of the decrypted content (e.g. recording via screen capture software).
+A DASH presentation MAY provide some or all adaptation sets in encrypted form, requiring the use of a [=DRM system=] to decrypt the content for playback. The duty of a [=DRM system=] is to prevent disclosure of the [=content key=] and misuse of the decrypted content (e.g. recording via screen capture software) and may be to decrypt content.
 
 In a DASH presentation, every representation in an adaptation set SHALL be protected using the same [=content key=] (identified by the same `default_KID`).
 
 This means that if representations use different [=content keys=], they must be in different adaptation sets, even if they would otherwise (were they not encrypted) belong to the same adaptation set. A `urn:mpeg:dash:adaptation-set-switching:2016` supplemental property descriptor ([[!DASH]] 5.3.3.5) SHALL be used to signal that such adaptation sets are suitable for switching.
 
-Encrypted DASH content SHALL use either the `cenc` or the `cbcs` <dfn>protection scheme</dfn> defined in [[!CENC]]. `cenc` and `cbcs` are two mutually exclusive [=protection schemes=]. DASH content encrypted according to the `cenc` [=protection scheme=] cannot be decrypted by a DRM system supporting only the `cbcs` [=protection scheme=] and vice versa.
+Encrypted DASH content SHALL use either the `cenc` or the `cbcs` <dfn>protection scheme</dfn> defined in [[!CENC]]. `cenc` and `cbcs` are two mutually exclusive [=protection schemes=]. DASH content encrypted according to the `cenc` [=protection scheme=] cannot be decrypted by a [=DRM system=] supporting only the `cbcs` [=protection scheme=] and vice versa.
 
 Some [=DRM system=] implementations support both [=protection schemes=]. Even when this is the case, clients SHALL NOT concurrently consume encrypted content that uses different [=protection schemes=].
 
-Representations in the same adaptation set SHALL use the same [=protection scheme=]. Representations in different adaptation sets MAY use different [=protection schemes=]. If both [=protection schemes=] are used in the same DASH period, all encrypted representations in that period SHALL be provided using both [=protection schemes=]. That is, the only permissible scenario for using both [=protection schemes=] together is to offer them as equal alternatives to target DASH clients with different capabilities.
+Representations in the same adaptation set SHALL use the same [=protection scheme=]. Representations in different adaptation sets MAY use different [=protection schemes=]. If both [=protection schemes=] are used in the same period, all encrypted representations in that period SHALL be provided using both [=protection schemes=]. That is, the only permissible scenario for using both [=protection schemes=] together is to offer them as equal alternatives to target DASH clients with different capabilities.
 
-Representations that contain the same media content using different [=protection schemes=] SHALL use different [=content keys=]. This protects against some cryptographic attacks [[MSPR-EncryptionModes]].
+Representations that contain the same media content using different [=protection schemes=] SHOULD use different [=content keys=]. This protects against some cryptographic attacks [[MSPR-EncryptionModes]].
 
 ## Robustness ## {#CPS-robustness}
 
@@ -101,9 +103,9 @@ The structure of content protection related information in the CMAF containers u
 
 Note: This document uses the `cenc:` prefix to reference the XML namespace `urn:mpeg:cenc:2013` [[!CENC]].
 
-Initialization segments SHOULD NOT contain any `moov/pssh` box ([[!CMAF]] 7.4.3) and DASH clients MAY ignore such boxes when encountered. Instead, `pssh` boxes required for [=DRM system=] initialization are part of the [=DRM system configuration=] and SHOULD be placed in the MPD as `cenc:pssh` elements in [=DRM system=] specific `ContentProtection` descriptors.
+Initialization segments SHOULD NOT contain any `moov/pssh` box ([[!CMAF]], section 7.4.3) and DASH clients MAY ignore such boxes when encountered. Instead, `pssh` boxes required for [=DRM system=] initialization are part of the [=DRM system configuration=] and SHOULD be placed in the MPD as `cenc:pssh` elements in [=DRM system=] specific `ContentProtection` descriptors.
 
-Note: Placing the `pssh` boxes in the MPD has become common for purposes of operational agility - it is often easier to update MPD files than rewrite initialization segments when the default [=DRM system configuration=] needs to be updated. Furthermore, in some scenarios the appropriate set of `pssh` boxes is not known when the initialization segment is created.
+Note: Placing the `pssh` boxes in the MPD has become common for purposes of operational agility - it is often easier to update MPD files than rewrite initialization segments when the default [=DRM system configuration=] needs to be updated or when a new [=DRM system=] needs to be supported. Furthermore, in some scenarios the appropriate set of `pssh` boxes is not known when the initialization segment is created.
 
 Protected content MAY be published without any `pssh` boxes in both the MPD and media segments. All [=DRM system configuration=] can be provided at runtime, including the `pssh` box data. See also [[#CPS-mpd-drm-config]].
 
@@ -134,7 +136,7 @@ DASH media segments are composed of a single CMAF fragment that contains:
 * For each sample grouping type (see [[!ISOBMFF]], typically one), exactly one `moof/traf/sbgp` "Sample to Group" box ([[!ISOBMFF]] 8.9.2 and [[!CENC]] section 6) which associates samples with sample groups.
     * Omitted if no parameters are overridden.
 
-[[#CPS-KeyHierarchy|A key hierarchy]] is implemented by listing the `default_KID` in the `tenc` box of the initialization segment (identifying the [=root key=]) and then overriding the key identifier in the `sgpd` boxes of media segments (identifying the [=leaf keys=] that apply to each media segment). The `moof/pssh` box is used to deliver/unlock new [=leaf keys=] and provide the associated license policy.
+[[#CPS-KeyHierarchy|A key hierarchy]] is implemented by listing the `default_KID` in the `tenc` box of the initialization segment (identifying the [=root key=]) and then overriding the key identifier in the `sgpd` boxes of media segments (identifying the [=leaf keys=] that apply to each media segment). The `moof/pssh` box is used to deliver/unlock new [=leaf keys=] and may provide the associated license policy.
 
 When using CMAF chunks for delivery, each CMAF fragment may be split into multiple CMAF chunks. If the CMAF fragment contained any `moof/pssh` boxes, copies of these boxes SHALL be present in each CMAF chunk that starts with an independent media sample.
 
@@ -144,7 +146,7 @@ Note: While DASH only requires the presence of `moof/pssh` in the first CMAF chu
 
 A DASH client needs to recognize encrypted content and activate a suitable [=DRM system=], configuring it to decrypt content. The MPD informs a DASH client of the [=protection scheme=] used to protect content, identifies the [=content keys=] that are used and optionally provides the default [=DRM system configuration=] for a set of [=DRM systems=].
 
-A <dfn>DRM system configuration</dfn> is the complete data set required for a DASH client to activate a single [=DRM system=] and configure it to decrypt content using a single [=content key=]. <b>It is supplied by a combination of XML elements in the MPD and/or [=solution-specific logic and configuration=]</b>. A [=DRM system configuration=] often contains:
+The <dfn>DRM system configuration</dfn> is the complete data set required for a DASH client to activate a single [=DRM system=] and configure it to decrypt content using a single [=content key=]. <b>It is supplied by a combination of XML elements in the MPD and/or [=solution-specific logic and configuration=]</b>. The [=DRM system configuration=] often contains:
 
 * DRM system initialization data in the form of a DRM system specific `pssh` box (as defined in [[!CENC]]).
 * DRM system initialization data in some other DRM system specific form (e.g. `keyids` JSON structure used by [[#CPS-AdditionalConstraints-W3C|W3C Clear Key]])
@@ -161,9 +163,9 @@ Note: In theory, it is possible for the [=DRM system=] initialization data to be
 
 ## Signaling presence of encrypted content ## {#CPS-mpd-scheme}
 
-The presence of a `ContentProtection` descriptor with `schemeIdUri="urn:mpeg:dash:mp4protection:2011"` on an adaptation set informs a DASH client that all representations in the adaptation set are encrypted in conformance to Common Encryption ([[!DASH]] 5.8.4.1, 5.8.5.2 and [[!CENC]] 11) and require a [=DRM system=] to provide access.
+The presence of a `ContentProtection` descriptor with `schemeIdUri="urn:mpeg:dash:mp4protection:2011"` on an adaptation set informs a DASH client that all representations in the adaptation set are encrypted in conformance to Common Encryption ([[!DASH]] sections 5.8.4.1 and 5.8.5.2 and [[!CENC]] section 11) and require a [=DRM system=] to provide access.
 
-This descriptor is present for all encrypted content ([[!DASH]] 5.8.4.1). It SHALL be defined on the adaptation set level. The `value` attribute SHALL be either `cenc` or `cbcs`, matching the used [=protection scheme=]. The `cenc:default_KID` attribute SHALL be present and have a value matching the `default_KID` in the `tenc` box. The value SHALL be expressed in lowercase UUID string notation.
+This descriptor is present for all encrypted content ([[!DASH]] section 5.8.4.1). It SHALL be defined on the adaptation set level. The `value` attribute has to be matching the used protection scheme ([[!DASH]] section 5.8.5.2). The `cenc:default_KID` attribute SHALL be present and have a value matching the `default_KID` in the `tenc` box. The value SHALL be expressed in lowercase UUID string notation.
 
 <div class="example">
 Signaling an adaptation set encrypted using the `cbcs` scheme and with a [=content key=] identified by `34e5db32-8625-47cd-ba06-68fca0655a72`.
@@ -212,15 +214,15 @@ This logic applies to all scenarios that make use of additional keys, regardless
 
 A DASH service SHOULD supply a default [=DRM system configuration=] in the MPD for all supported [=DRM systems=] in all encrypted adaptation sets. This enables playback without the need for DASH client customization or additional client-side configuration. [=DRM system configuration=] MAY also be supplied by [=solution-specific logic and configuration=], replacing or enhancing the defaults provided in the MPD.
 
-Any number of `ContentProtection` descriptors ([[!DASH]] 5.8.4.1) MAY be present in the MPD to provide [=DRM system configuration=]. These descriptors SHALL be defined on the adaptation set level. The contents MAY be ignored by the DASH client if overridden by [=solution-specific logic and configuration=] - the [=DRM system configuration=] in the MPD simply provides default values known at content authoring time.
+Any number of `ContentProtection` descriptors ([[!DASH]] section 5.8.4.1) MAY be present in the MPD to provide [=DRM system configuration=]. These descriptors SHALL be defined on the adaptation set level. The contents MAY be ignored by the DASH client if overridden by [=solution-specific logic and configuration=] - the [=DRM system configuration=] in the MPD simply provides default values known at content authoring time.
 
 A `ContentProtection` descriptor providing a default [=DRM system configuration=] SHALL use  `schemeIdUri="urn:uuid:<systemid>"` to identify the [=DRM system=], with the `<systemid>` matching a value in the [DASH-IF system-specific identifier registry](https://dashif.org/identifiers/content_protection/). The `value` attribute of the `ContentProtection` descriptor SHOULD contain the DRM system name and version number in a human readable form (for diagnostic purposes).
 
-Note: W3C defines the Clear Key mechanism ([[!encrypted-media]] 9.1), which is a "dummy" DRM system implementation intended for client and platform development/testing purposes. **Understand that Clear Key does not fulfill the content protection and content key protection duties ordinarily expected from a DRM system.** For more guidelines on Clear Key usage, see [[#CPS-AdditionalConstraints-W3C]].
+Note: W3C defines the Clear Key mechanism ([[!encrypted-media]] section 9.1), which is a "dummy" DRM system implementation intended for client and platform development/testing purposes. **Understand that Clear Key does not fulfill the content protection and content key protection duties ordinarily expected from a DRM system.** For more guidelines on Clear Key usage, see [[#CPS-AdditionalConstraints-W3C]].
 
 Each DRM system specific `ContentProtection` descriptor can contain a mix of XML elements and attributes defined by [[!CENC]], the [=DRM system=] author, DASH-IF or any other party.
 
-For [=DRM systems=] initialized by supplying `pssh` boxes [[!CENC]], the `cenc:pssh` element SHOULD be present under the `ContentProtection` descriptor if the value is known at MPD authoring time. The base64 encoded contents of the element SHALL be equivalent to a complete `pssh` box including its length and header fields. See also [[#CPS-cmaf]].
+For [=DRM systems=] initialized by supplying `pssh` boxes, the `cenc:pssh` element SHOULD be present under the `ContentProtection` descriptor if the value is known at MPD authoring time. The base64 encoded contents of the element shall be equivalent to a complete `pssh` box including its length and header fields ([[!CENC]] section 11.3.3). See also [[#CPS-cmaf]].
 
 [=DRM systems=] generally use the concept of license requests as the mechanism for obtaining [=content keys=] and associated usage constraints (see [[#CPS-license-request-workflow]]). For [=DRM systems=] that use this concept, one or more `dashif:laurl` elements SHOULD be present under the `ContentProtection` descriptor, with the value of the element being the URL to send license requests to. This URL MAY contain [[#CPS-lr-model-contentid|content identifiers]].
 
@@ -246,9 +248,9 @@ A `ContentProtection` descriptor that provides default [=DRM system configuratio
 </xmp>
 </div>
 
-The presence of a [=DRM system=] specific `ContentProtection` descriptor is not required in order to activate the [=DRM system=]; these elements are used merely to provide the default [=DRM system configuration=]. Empty `ContentProtection` descriptors SHOULD NOT be present in an MPD and MAY be ignored by DASH clients.
+The presence of a [=DRM system=] specific `ContentProtection` descriptor is not required in order to activate the [=DRM system=]; these descriptors are used merely to provide the default [=DRM system configuration=]. Empty `ContentProtection` descriptors SHOULD NOT be present in an MPD and MAY be ignored by DASH clients.
 
-Because `default_KID` determines the scope of [=DRM system=] interactions, the contents of [=DRM system=] specific `ContentProtection` elements with the same `schemeIdUri` SHALL be identical in all adaptation sets with the same `default_KID`. This means that a [=DRM system=] will treat equally all adaptation sets that use the same [=content key=].
+Because `default_KID` determines the scope of [=DRM system=] interactions, the contents of [=DRM system=] specific `ContentProtection` descriptors with the same `schemeIdUri` SHALL be identical in all adaptation sets with the same `default_KID`. This means that a [=DRM system=] will treat equally all adaptation sets that use the same [=content key=].
 
 Note: If you wish to change the default [=DRM system configuration=] associated with a [=content key=], you must update all the instances where the data is present in the MPD. For live services, this can mean updating the data in multiple periods.
 
@@ -256,4 +258,4 @@ To maintain the `default_KID` association, a DASH client that exposes APIs/callb
 
 ## Delivering updates to DRM system internal state ## {#CPS-mpd-moof-pssh}
 
-Some DRM systems support live updates to DRM system internal state (e.g. to deliver new leaf keys in a key hierarchy). These updates SHALL NOT be present in the MPD and SHALL be delivered by `moof/pssh` boxes in media segments.
+Some DRM systems support live updates to DRM system internal state (e.g. to deliver new [=leaf keys=] in a key hierarchy). These updates SHALL NOT be present in the MPD and SHALL be delivered by `moof/pssh` boxes in media segments.
