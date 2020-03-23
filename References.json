@@ -11,6 +11,9 @@
     "jws": {
         "aliasOf": "rfc7515"
     },
+    "jwe": {
+        "aliasOf": "rfc7516"
+    },
     "MSPR-EncryptionModes": {
         "title": "PlayReady Content Encryption Modes",
         "publisher": "Microsoft",
