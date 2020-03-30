@@ -205,7 +205,7 @@ For historical reasons, platform APIs often implement [=DRM system=] activation 
 
 Note: The batching may, for example, be accomplished by concatenating all the `pssh` boxes for the different [=content keys=]. Support for this type of batching among DRM systems and platform APIs remains uncommon, despite the potential efficiency gains from reducing the number of license requests triggered.
 
-### Handling unavailability of [=content keys=] ### {#CPS-unavailable-keys}
+### Handling unavailability of content keys ### {#CPS-unavailable-keys}
 
 It is possible that not all of the encrypted adaptation sets selected for playback can actually be played back (e.g. because a [=content key=] for ultra-HD content is only authorized for use by implementations with a high [=robustness level=]). The unavailability of one or more [=content keys=] SHOULD NOT be considered a fatal error condition as long as at least one audio and at least one video adaptation set remains available for playback (assuming both content types are initially selected for playback). This logic MAY be overridden by solution specific business logic to better reflect end-user expectations.
 
