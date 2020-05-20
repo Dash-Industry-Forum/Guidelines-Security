@@ -2,6 +2,8 @@
 
 This document provides guidelines for implementing content protection and security features in DASH clients and services.
 
+[Join DASH-IF on Slack!](https://join.slack.com/t/dashif/shared_invite/zt-egme869x-JH~UPUuLoKJB26fw7wj3Gg)
+
 # Submitting bug reports, proposals and comments
 
 You may [create an issue](https://github.com/Dash-Industry-Forum/Guidelines-Security/issues/new) in this repository to submit any type of input to DASH-IF. Create separate issues for separate topics.
@@ -43,5 +45,3 @@ Most recent content from the **published** branch (final outputs published by DA
 # Document authoring
 
 See [Document Authoring Kit](https://dashif.org/DocumentAuthoring/) for details on document authoring process and the relevant tooling.
-
-Join **#iop** on Slack for live chat: [![Slack Status](https://dashif-slack.azurewebsites.net/badge.svg)](https://dashif-slack.azurewebsites.net)
