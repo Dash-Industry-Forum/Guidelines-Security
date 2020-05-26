@@ -11,7 +11,7 @@ This document does not define any [=DRM system=]. DASH-IF maintains a registry o
 
 Common Encryption [[!CENC]] specifies several [=protection schemes=] which can be applied by a scrambling system and used by different [=DRM systems=]. The same encrypted DASH presentation can be decrypted by different [=DRM systems=] if a DASH client is provided the [=DRM system configuration=] for each [=DRM system=], either in the MPD or at runtime.
 
-A <dfn>content key</dfn> is a 128-bit key used by a [=DRM system=] to make content available for playback. It is identified by a UUID-format string called `default_KID` (or sometimes simply `KID`). A [=content key=] and its identifier are shared between all [=DRM systems=], whereas the mechanisms used for key acquisition and content protection are largely [=DRM system=] specific. Different DASH adaptation sets are often protected by different [=content keys=].
+A <dfn>content key</dfn> is a 128-bit key used by a [=DRM system=] to make content available for playback. It is identified by a string called `default_KID` (or sometimes simply `KID`). A [=content key=] and its identifier are shared between all [=DRM systems=], whereas the mechanisms used for key acquisition and content protection are largely [=DRM system=] specific. Different DASH adaptation sets are often protected by different [=content keys=].
 
 <div class="example">
 Example `default_KID` in string format: `72c3ed2c-7a5f-4aad-902f-cbef1efe89a9`
@@ -167,7 +167,7 @@ The [=DRM system configuration=] MAY change over time, both due to MPD updates i
 
 The presence of a `ContentProtection` descriptor with `schemeIdUri="urn:mpeg:dash:mp4protection:2011"` on an adaptation set informs a DASH client that all representations in the adaptation set are encrypted in conformance to Common Encryption ([[!DASH]] sections 5.8.4.1 and 5.8.5.2 and [[!CENC]] section 11) and require a [=DRM system=] to provide access.
 
-This descriptor is present for all encrypted content ([[!DASH]] section 5.8.4.1). It SHALL be defined on the adaptation set level. The `value` attribute has to be matching the used protection scheme ([[!DASH]] section 5.8.5.2). The `cenc:default_KID` attribute SHALL be present and have a value matching the `default_KID` in the `tenc` box. The value SHALL be expressed in lowercase UUID string notation.
+This descriptor is present for all encrypted content ([[!DASH]] section 5.8.4.1). It SHALL be defined on the adaptation set level. The `value` attribute has to be matching the used protection scheme ([[!DASH]] section 5.8.5.2). The `cenc:default_KID` attribute SHALL be present and have a value matching the `default_KID` in the `tenc` box. According to CMAF, Section 8.2.1, the `default_KID` in the `tenc` box is strongly recommended to be a UUID.
 
 <div class="example">
 Signaling an adaptation set encrypted using the `cbcs` scheme and with a [=content key=] identified by `34e5db32-8625-47cd-ba06-68fca0655a72`.
