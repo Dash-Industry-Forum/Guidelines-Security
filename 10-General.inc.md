@@ -11,11 +11,15 @@ This document does not define any [=DRM system=]. DASH-IF maintains a registry o
 
 Common Encryption [[!CENC]] specifies several [=protection schemes=] which can be applied by a scrambling system and used by different [=DRM systems=]. The same encrypted DASH presentation can be decrypted by different [=DRM systems=] if a DASH client is provided the [=DRM system configuration=] for each [=DRM system=], either in the MPD or at runtime.
 
-A <dfn>content key</dfn> is a 128-bit key used by a [=DRM system=] to make content available for playback. It is identified by a string called `default_KID` (or sometimes simply `KID`). A [=content key=] and its identifier are shared between all [=DRM systems=], whereas the mechanisms used for key acquisition and content protection are largely [=DRM system=] specific. Different DASH adaptation sets are often protected by different [=content keys=].
+A <dfn>content key</dfn> is a 128-bit key used by a [=DRM system=] to make content available for playback. It is identified by a string called `default_KID` (or sometimes simply KID or "key ID"). The format constraints of the string are defined in [[!CENC]].
 
 <div class="example">
-Example `default_KID` in string format: `72c3ed2c-7a5f-4aad-902f-cbef1efe89a9`
+Example `default_KID`: `72c3ed2c-7a5f-4aad-902f-cbef1efe89a9`
 </div>
+
+Advisement: While the `default_KID` format visually resembles a UUID, it is not exactly the same. UUIDs have constraints on the byte values permitted at certain positions in the data structure, whereas [[!CENC]] sets no constraints on the values in `default_KID`, only specifying the format of the string itself. [[!CMAF]] recommends that the value in the string conform to UUID but this is not mandatory.
+
+A [=content key=] and its identifier are shared between all [=DRM systems=], whereas the mechanisms used for key acquisition and content protection are largely [=DRM system=] specific. Different DASH adaptation sets are often protected by different [=content keys=].
 
 A <dfn>license</dfn> is a data structure in a [=DRM system=] specific format that contains one or more [=content keys=] and associates them with a policy that governs the usage of the [=content keys=] (e.g. expiration time). The encapsulated [=content keys=] are typically encrypted and only readable by the [=DRM system=].
 
@@ -167,7 +171,7 @@ The [=DRM system configuration=] MAY change over time, both due to MPD updates i
 
 The presence of a `ContentProtection` descriptor with `schemeIdUri="urn:mpeg:dash:mp4protection:2011"` on an adaptation set informs a DASH client that all representations in the adaptation set are encrypted in conformance to Common Encryption ([[!DASH]] sections 5.8.4.1 and 5.8.5.2 and [[!CENC]] section 11) and require a [=DRM system=] to provide access.
 
-This descriptor is present for all encrypted content ([[!DASH]] section 5.8.4.1). It SHALL be defined on the adaptation set level. The `value` attribute has to be matching the used protection scheme ([[!DASH]] section 5.8.5.2). The `cenc:default_KID` attribute SHALL be present and have a value matching the `default_KID` in the `tenc` box. According to CMAF, Section 8.2.1, the `default_KID` in the `tenc` box is strongly recommended to be a UUID.
+This descriptor is present for all encrypted content ([[!DASH]] section 5.8.4.1). It SHALL be defined on the adaptation set level. The `value` attribute indicates the used protection scheme ([[!DASH]] section 5.8.5.2). The `cenc:default_KID` attribute SHALL be present and have a value matching the `default_KID` in the `tenc` box.
 
 <div class="example">
 Signaling an adaptation set encrypted using the `cbcs` scheme and with a [=content key=] identified by `34e5db32-8625-47cd-ba06-68fca0655a72`.
@@ -179,6 +183,18 @@ Signaling an adaptation set encrypted using the `cbcs` scheme and with a [=conte
     cenc:default_KID="34e5db32-8625-47cd-ba06-68fca0655a72" />
 </xmp>
 </div>
+
+The `tenc` box stores `default_KID` as a 16-byte array. The byte order SHALL be identical in the binary structure and the string-form `default_KID`.
+
+<div class="example">
+The following are two equivalent forms of representing the same `default_KID`:
+
+* In string form: `00010203-0405-0607-0809-0a0b0c0d0e0f`
+* In binary form: `0x00`, `0x01`, `0x02`, `0x03`, `0x04`, `0x05`, `0x06`, `0x07`, `0x08`, `0x09`, `0x0a`, `0x0b`, `0x0c`, `0x0d`, `0x0e`, `0x0f`
+
+</div>
+
+Advisement: Some Windows-targeting software libraries implement "Microsoft style" UUID serialization that changes the order of bytes when transforming between string form and binary form. This is not appropriate when serializing/deserializing `default_KID` values. Linux-based tooling typically does not change the byte order.
 
 ## default_KID defines the scope of DRM system interactions ## {#CPS-default_KID}
 
