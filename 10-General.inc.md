@@ -17,7 +17,7 @@ A <dfn>content key</dfn> is a 128-bit key used by a [=DRM system=] to make conte
 Example `default_KID`: `72c3ed2c-7a5f-4aad-902f-cbef1efe89a9`
 </div>
 
-Advisement: While the `default_KID` format visually resembles a UUID, it is not exactly the same. UUIDs have constraints on the byte values permitted at certain positions in the data structure, whereas [[!CENC]] sets no constraints on the values in `default_KID`, only specifying the format of the string itself. [[!CMAF]] recommends that the value in the string conform to UUID but this is not mandatory.
+Advisement: While the `default_KID` format visually resembles a UUID, it is not exactly the same. UUIDs have constraints on the byte values permitted at certain positions in the data structure, whereas [[!CENC]] sets no constraints on the values in `default_KID`. [[!CENC]] defines only the format of the string and merely recommends that the value in the string conform to UUID.
 
 A [=content key=] and its identifier are shared between all [=DRM systems=], whereas the mechanisms used for key acquisition and content protection are largely [=DRM system=] specific. Different DASH adaptation sets are often protected by different [=content keys=].
 
