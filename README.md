@@ -1,6 +1,6 @@
 # DASH-IF implementation guidelines: content protection and security
 
-Note that this online version is deprecated and that the document will further be updated as a Word version available on the DASH-IF working space. You can still submit bugs.
+Advisement: This online version is deprecated and the document will further be updated as a Word version available on the DASH-IF working space. You can still submit bugs.
 
 This document provides guidelines for implementing content protection and security features in DASH clients and services.
 
