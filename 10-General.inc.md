@@ -3,7 +3,7 @@
 DASH-IF provides guidelines for using multiple [=DRM systems=] to access a DASH presentation by adding encryption signaling and [=DRM system configuration=] to DASH content encrypted in conformance to Common Encryption [[!CENC]]. In addition to content authoring guidelines, DASH-IF specifies interoperable workflows for DASH client interactions with [=DRM systems=], platform APIs and external services involved in content protection interactions.
 
 <figure>
-	<img src="Diagrams/DrmBigPicture.png" />
+	<img src="Diagrams/DrmBigPicture.png" >
 	<figcaption>A [=DRM system=] cooperates with the device's [=media platform=] to enable playback of encrypted content while protecting the decrypted samples and [=content keys=] against potential attacks. The DASH-IF implementation guidelines focus on the signaling in the DASH presentation and the interactions of the DASH client with other components.</figcaption>
 </figure>
 
@@ -28,7 +28,7 @@ A <dfn>license</dfn> is a data structure in a [=DRM system=] specific format tha
 Different software architectural components are involved in playback of encrypted content. The exact nature depends on the specific implementation. A high-level reference architecture is described here.
 
 <figure>
-	<img src="Diagrams/SoftwareComponents.png" />
+	<img src="Diagrams/SoftwareComponents.png" >
 	<figcaption>Reference architecture for encrypted content playback.</figcaption>
 </figure>
 
@@ -220,7 +220,7 @@ Note: This optimization might require support from platform APIs and/or [=DRM sy
 While it is common that `default_KID` identifies the actual [=content key=] used for encryption, a [=DRM system=] MAY make use of other keys in addition to the one signalled by the `default_KID` value but this SHALL be transparent to the client with only the `default_KID` being used in interactions between the DASH client and the [=DRM system=]. See [[#CPS-KeyHierarchy]].
 
 <figure>
-	<img src="Diagrams/KeyHierarchyAndDefaultKid.png" />
+	<img src="Diagrams/KeyHierarchyAndDefaultKid.png" >
 	<figcaption>In a [[#CPS-KeyHierarchy|hierarchical key scenario]], `default_KID` references the [=root key=] and only the sample group descriptions reference the [=leaf keys=].</figcaption>
 </figure>
 

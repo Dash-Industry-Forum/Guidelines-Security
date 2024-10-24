@@ -53,7 +53,7 @@ The above data sets are serialized and digitally signed to arrive at the final f
 [=Authorization tokens=] are issued by an authorization service, which is part of a solution's business logic. The authorization service has access to the project-specific context that it needs to make its decisions (e.g. the active session, user identification and database of purchases/entitlements). A single authorization service can be used to issue [=authorization tokens=] for multiple license servers, simplifying architecture in solutions where multiple license server vendors are used.
 
 <figure>
-	<img src="Diagrams/LicenseRequestModel-BaselineArchitecture.png" />
+	<img src="Diagrams/LicenseRequestModel-BaselineArchitecture.png" >
 	<figcaption>Role of the authorization service in DRM workflow related communication.</figcaption>
 </figure>
 
@@ -68,7 +68,7 @@ To obtain an [=authorization token=], a DASH client needs to know the URL of the
 If no authorization service URL is provided by the MPD nor made available at runtime, a DASH client SHALL NOT attach an [=authorization token=] to a license request. Absence of this URL implies that authorization operations are performed in a manner transparent to the DASH client (see [[#CPS-lr-model-deployment]]).
 
 <figure>
-	<img src="Images/AuthzTokenSharingAndSelection.png" />
+	<img src="Images/AuthzTokenSharingAndSelection.png" >
 	<figcaption>[=Authorization tokens=] are requested from all authorization services referenced by the selected adaptation sets.</figcaption>
 </figure>
 
@@ -197,7 +197,7 @@ Authorization services and license servers SHOULD indicate an inability to satis
 
 1. Signals a suitable status code (4xx or 5xx).
 1. Has a `Content-Type` of `application/problem+json`.
-1. Contains a HTTP response body conforming to [[!rfc7807]].
+1. Contains a HTTP response body conforming to [[!rfc7807 obsolete]].
 
 <div class="example">
 HTTP response from an authorization service, indicating a rejected [=authorization token=] request because the requested content is not a part of the user's subscriptions.
@@ -265,7 +265,7 @@ The interoperable license request model is designed to allow for the use of diff
 The baseline architecture assumes that a separate authorization service exists, implementing the logic required to determine which users have the rights to access which content.
 
 <figure>
-	<img src="Diagrams/LicenseRequestModel-BaselineArchitecture.png" />
+	<img src="Diagrams/LicenseRequestModel-BaselineArchitecture.png" >
 	<figcaption>The baseline architecture with an authorization service directly exposed to the DASH client.</figcaption>
 </figure>
 
@@ -274,7 +274,7 @@ While the baseline architecture offers several advantages, in some cases it may 
 A common implementation for transparent authorization is to use a "license proxy", which acts as a license server but instead forwards the license request after authorization checks have passed. Alternatively, the license server itself may perform the authorization checks.
 
 <figure>
-	<img src="Diagrams/LicenseRequestModel-TransparentArchitecture.png" />
+	<img src="Diagrams/LicenseRequestModel-TransparentArchitecture.png" >
 	<figcaption>A transparent authorization architecture performs the authorization checks at the license server, which is often hidden behind a proxy (indistinguishable from a license server to the DASH client).</figcaption>
 </figure>
 

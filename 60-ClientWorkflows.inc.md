@@ -29,7 +29,7 @@ A typical [=DRM system=] might offer the following set of capabilities:
 A typical [=media platform=] API such as EME [[!encrypted-media]] will require the DASH client to query the platform by supplying a desired capability set. The [=media platform=] will inspect the desired capabilities, possibly displaying a permissions prompt to the user (if sensitive capabilities such as unique user identification are requested), after which it will return a supported capability set that indicates which of the desired capabilities are available.
 
 <figure>
-	<img src="Images/CapabilityNegotiation.png" />
+	<img src="Images/CapabilityNegotiation.png" >
 	<figcaption>The DASH client presents a set of desired capabilities for each [=DRM system=] and receives a response with the supported subset.</figcaption>
 </figure>
 
@@ -128,7 +128,7 @@ When encrypted adaptation sets are initially selected for playback or when the s
     * This enables business logic to include DRM systems not signaled in the MPD.
 
 1. Let <var>default_kids</var> be the set of all distinct `default_KID` values in <var>adaptation_sets</var>.
-1. Let <var>system_configurations</var> be an empty map of `system ID -> map(default_kid -> configuration)`, representing the [=DRM system configuration=] of each `default_KID` for each [=DRM system=].<br><img src="Images/SelectionAlgorithm-SystemConfigurations.png" />
+1. Let <var>system_configurations</var> be an empty map of `system ID -> map(default_kid -> configuration)`, representing the [=DRM system configuration=] of each `default_KID` for each [=DRM system=].<br><img src="Images/SelectionAlgorithm-SystemConfigurations.png" >
 1. For each <var>system_id</var> in <var>candidate_system_ids</var>:
     1. Let <var>configurations</var> be a map of `default_kid -> configuration` where the keys are <var>default_kids</var> and the values are the [=DRM system configurations=] initialized with data from `ContentProtection` descriptors in the MPD (matching on `default_KID` and <var>system_id</var>).
         * If there is no matching `ContentProtection` descriptors in the MPD, the map still contains a partially initialized [=DRM system configuration=] for the `default_KID`.
@@ -211,7 +211,7 @@ It is possible that not all of the encrypted adaptation sets selected for playba
 A DASH client can request a [=DRM system=] to enable decryption using any set of [=content keys=] (if it has the necessary [=DRM system configuration=]). However, this is only a request and playback can be countermanded at multiple stages of processing by different involved entities.
 
 <figure>
-	<img src="Diagrams/ReductionOfKeys.png" />
+	<img src="Diagrams/ReductionOfKeys.png" >
 	<figcaption>The set of [=content keys=] made available for use can be far smaller than the set requested by a DASH client. Example workflow indicating potential instances of [=content keys=] being removed from scope.</figcaption>
 </figure>
 
@@ -262,7 +262,7 @@ DASH clients performing license requests SHOULD follow the [[#CPS-lr-model|DASH-
 [=DRM systems=] generally do not perform license requests on their own. Rather, when they determine that a [=license=] is required, they generate a document that serves as the license request body and expect the DASH client to deliver it to a license server for processing. The latter returns a suitable response that, if a [=license=] is granted, encapsulates the [=content keys=] in an encrypted form only readable to the DRM system.
 
 <figure>
-	<img src="Diagrams/LicenseRequestConcept.png" />
+	<img src="Diagrams/LicenseRequestConcept.png" >
 	<figcaption>Simplified conceptual model of license request processing. Many details omitted.</figcaption>
 </figure>
 
@@ -276,7 +276,7 @@ The license request workflow defined here exists to enable the following goals t
 
 The proof of authorization is optional and the need to attach it to a license request is indicated by the presence of at least one `dashif:authzurl` in the [=DRM system configuration=]. The proof of authorization is a [[!jwt|JSON Web Token]] in compact encoding (the `aaa.bbb.ccc` form) returned as the HTTP response body when the DASH client performs a GET request to this URL. The token is attached to a license request in the HTTP `Authorization` header with the `Bearer` type. For details, see [[#CPS-lr-model]].
 
-Error responses from both the authorization service and the license server SHOULD be returned as [[rfc7807]] compatible responses with a 4xx or 5xx status code and `Content-Type: application/problem+json`.
+Error responses from both the authorization service and the license server SHOULD be returned as [[rfc7807 obsolete]] compatible responses with a 4xx or 5xx status code and `Content-Type: application/problem+json`.
 
 DASH clients SHOULD implement retry behavior to recover from transient failures and expiration of [=authorization tokens=].
 
