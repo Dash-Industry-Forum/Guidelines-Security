@@ -20,30 +20,11 @@ You may also submit pull requests if you are familiar with their use.
 
 Most recent content from the **master** branch (may contain work in progress):
 
-![Build status of master branch](https://dev.azure.com/dashif/Automation/_apis/build/status/Guidelines-Security?branchName=master)
+[![Build status of master branch](https://github.com/Dash-Industry-Forum/Guidelines-Security/actions/workflows/publish.yml/badge.svg)](https://github.com/Dash-Industry-Forum/Guidelines-Security/actions/workflows/publish.yml)
 
-* [HTML document](https://dashif-documents.azurewebsites.net/Guidelines-Security/master/Guidelines-Security.html)
-* [PDF document](https://dashif-documents.azurewebsites.net/Guidelines-Security/master/Guidelines-Security.pdf)
-* [Download PDF + HTML as archive](https://dashif-documents.azurewebsites.net/Guidelines-Security/master/Guidelines-Security.zip)
-
-Most recent content from the **community-review** branch (latest version published for community review):
-
-![Build status of community-review branch](https://dev.azure.com/dashif/Automation/_apis/build/status/Guidelines-Security?branchName=community-review)
-
-* [HTML document](https://dashif-documents.azurewebsites.net/Guidelines-Security/community-review/Guidelines-Security.html)
-* [PDF document](https://dashif-documents.azurewebsites.net/Guidelines-Security/community-review/Guidelines-Security.pdf)
-* [Download PDF + HTML as archive](https://dashif-documents.azurewebsites.net/Guidelines-Security/community-review/Guidelines-Security.zip)
-
-Most recent content from the **published** branch (final outputs published by DASH-IF):
-
-![Build status of published branch](https://dev.azure.com/dashif/Automation/_apis/build/status/Guidelines-Security?branchName=published)
-
-* [HTML document](https://dashif-documents.azurewebsites.net/Guidelines-Security/published/Guidelines-Security.html)
-* [PDF document](https://dashif-documents.azurewebsites.net/Guidelines-Security/published/Guidelines-Security.pdf)
-* [Download PDF + HTML as archive](https://dashif-documents.azurewebsites.net/Guidelines-Security/published/Guidelines-Security.zip)
-
-[View automated build history for all branches](https://dev.azure.com/dashif/Automation/_build?definitionId=14)
+* [HTML document](https://dashif.org/Guidelines-Security/)
+* [PDF document](https://dashif.org/Guidelines-Security/Guidelines-Security.pdf)
 
 # Document authoring
 
-See [Document Authoring Kit](https://dashif.org/DocumentAuthoring/) for details on document authoring process and the relevant tooling.
+See [Document Authoring Kit](https://dashif.org/DASH-IF-IOP/authoring/) for details on document authoring process and the relevant tooling.
