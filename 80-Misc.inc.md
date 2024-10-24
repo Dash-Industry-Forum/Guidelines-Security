@@ -16,7 +16,7 @@ Note: Changing the [=content keys=] does not increase the cryptographic security
 Using a key hierarchy allows a single [=content key=] to selectively unlock only a subset of a DASH presentation and apply license policy updates without the need to perform license requests at every program boundary. This mechanism is a specialization of periodic re-authorization for scenarios where license requests at program boundaries are not always desirable or possible.
 
 <figure>
-	<img src="Diagrams/KeyHierarchy.png" />
+	<img src="Diagrams/KeyHierarchy.png" >
 	<figcaption>A key hierarchy establishes a [=DRM system=] specific relationship between a [=root key=] and a set of [=leaf keys=].</figcaption>
 </figure>
 
@@ -43,7 +43,7 @@ The mechanism by which a set of [=leaf keys=] is made available based on a reque
 When using a key hierarchy, the [=leaf keys=] are typically delivered in-band in the media segments, using `moof/pssh` boxes, together with additional/updated license policy constraints. The exact implementation is [=DRM system=] specific and transparent to a DASH client.
 
 <figure>
-	<img src="Images/KeyHierarchy-NightlyUpdates.png" />
+	<img src="Images/KeyHierarchy-NightlyUpdates.png" >
 	<figcaption>Different rows indicate [=root key=] changes. Color alternations indicate [=leaf key=] changes. A key hierarchy enables per-program access control even in scenarios where a license request is only performed once per day. The single license request makes available all the [=leaf keys=] that the user is authorized to use during the next epoch.</figcaption>
 </figure>
 
