@@ -9,4 +9,4 @@ Group: dashif
 Issue Tracking: GitHub https://github.com/Dash-Industry-Forum/Guidelines-Security/issues
 </pre>
 
-Please, refer to the published version of the guideline that is available as DASH-IF IOP v5 Part 6. IT is available from [DASH-IF site](https://dashif.org/guidelines/iop-v5/#part-6-content-protection-and-security).
+Please, refer to the published version of the guideline that is available as DASH-IF IOP v5 Part 6. It is available from [DASH-IF site](https://dashif.org/guidelines/iop-v5/#part-6-content-protection-and-security).
