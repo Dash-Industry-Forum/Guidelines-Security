@@ -7,21 +7,6 @@ Shortname: dash-security
 URL: https://dashif.org/Guidelines-Security/
 Group: dashif
 Issue Tracking: GitHub https://github.com/Dash-Industry-Forum/Guidelines-Security/issues
-
 </pre>
 
-<pre class=include>
-path: 01-Intro.inc.md
-</pre>
-<pre class=include>
-path: 10-General.inc.md
-</pre>
-<pre class=include>
-path: 40-LicenseRequestModel.inc.md
-</pre>
-<pre class=include>
-path: 60-ClientWorkflows.inc.md
-</pre>
-<pre class=include>
-path: 80-Misc.inc.md
-</pre>
+Please, refer to the published version of the guideline that is available as DASH-IF IOP v5 Part 6. IT is available from [DASH-IF site](https://dashif.org/guidelines/iop-v5/#part-6-content-protection-and-security).
